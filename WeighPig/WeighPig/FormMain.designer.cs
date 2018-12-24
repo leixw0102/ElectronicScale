@@ -53,7 +53,8 @@
             this.panel_button = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.input_remarks = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtData = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid_weights)).BeginInit();
@@ -276,14 +277,28 @@
             this.input_remarks.TabIndex = 23;
             this.input_remarks.KeyUp += new System.Windows.Forms.KeyEventHandler(this.input_remarks_KeyUp);
             // 
-            // textBox1
+            // txtData
             // 
-            this.textBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(236, 30);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(382, 148);
-            this.textBox1.TabIndex = 25;
+            this.txtData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtData.Location = new System.Drawing.Point(304, 28);
+            this.txtData.Multiline = true;
+            this.txtData.Name = "txtData";
+            this.txtData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtData.Size = new System.Drawing.Size(314, 150);
+            this.txtData.TabIndex = 24;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(203, 99);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // FormMain
             // 
@@ -291,7 +306,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(986, 650);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.txtData);
             this.Controls.Add(this.input_remarks);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.panel_button);
@@ -339,6 +355,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn remarks;
         private System.Windows.Forms.DataGridViewTextBoxColumn is_upload;
         private System.Windows.Forms.DataGridViewTextBoxColumn life_cycle;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtData;
+        private System.Windows.Forms.Button button1;
     }
 }

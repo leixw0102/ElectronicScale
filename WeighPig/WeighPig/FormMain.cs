@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
@@ -14,14 +15,28 @@ namespace WeighPig
 {
     public partial class FormMain : Form
     {
-        SerialPort serialPort1 { get; set; }
+        static SerialPort serialPort1 { get; set; }
         public delegate void Displaydelegate(byte[] InputBuf);
         Byte[] OutputBuf = new Byte[128];
-        public Displaydelegate disp_delegate;
 
+        /// <summary>
+        /// 按钮集合
+        /// </summary>
         List<LabelItem> buttons { get; set; }
+        /// <summary>
+        /// 明细集合
+        /// </summary>
+        List<Weights> weights { get; set; }
+        /// <summary>
+        /// 当前日期
+        /// </summary>
         string today = DateTime.Now.ToString("yyyy-MM-dd");
+        /// <summary>
+        /// 当前流水号
+        /// </summary>
         int ssn { get; set; }
+
+        public static BackgroundWorker bw = new BackgroundWorker();
 
         public FormMain()
         {
@@ -35,7 +50,83 @@ namespace WeighPig
 
             ssn = this.grid_weights.RowCount;
 
+            bw.WorkerSupportsCancellation = true;
+            bw.WorkerReportsProgress = true;
+            bw.DoWork += Bw_DoWork;
+            bw.ProgressChanged += Bw_ProgressChanged;
+
             this.open_port();
+        }
+
+        private static void Bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var buffer = new byte[12];
+
+            while (!bw.CancellationPending)
+            {
+                try
+                {
+                    var c = serialPort1.Read(buffer, 0, buffer.Length);
+
+                    bw.ReportProgress(0, new SerialProgress() { Data = buffer.Take(c).ToArray() });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            Debug.WriteLine("Bw1_DoWork complete");
+        }
+        string result = "";
+        private void Bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            var sp = e.UserState as SerialProgress;
+
+            if(result.Length < 12)
+            {
+                result += Encoding.ASCII.GetString(sp.Data);
+            }
+            if(result.Length == 12)
+            {
+                this.txtData.AppendText(result);
+                this.txtData.AppendText(";");
+
+                string weightStr = "";
+                try
+                {
+                    double p = double.Parse(result.Substring(8, 1));
+                    double num = double.Parse(result.Substring(2, 6));
+                    weightStr = (num / Math.Pow(10, p)).ToString("0.00");
+                    this.save_weight(weightStr);
+                    this.showWeight(weightStr);
+                }
+                catch
+                {
+
+                }
+
+                result = "";
+            }
+
+            Debug.Write(Encoding.ASCII.GetString(sp.Data));
+        }
+
+        private void showWeight(string weightStr)
+        {
+            this.label_weight.Text = weightStr;
+        }
+        private void addGridRow(Weights w)
+        {
+            if (weights.Count == 0)
+            {
+                weights.Add(w);
+            }
+            else
+            {
+                weights.Insert(0, w);
+            }
+            this.grid_weights.DataSource = null;
+            this.grid_weights.DataSource = weights;
         }
 
         /// <summary>
@@ -63,68 +154,18 @@ namespace WeighPig
                 }
 
                 serialPort1 = new SerialPort(port, baudRate, parity, 8, StopBits.One);
-                disp_delegate = new Displaydelegate(DispUI);
-                serialPort1.DataReceived += new SerialDataReceivedEventHandler(Comm_DataReceived);
+                //disp_delegate = new Displaydelegate(DispUI);
+                //serialPort1.DataReceived += new SerialDataReceivedEventHandler(Comm_DataReceived);
                 serialPort1.ErrorReceived += new SerialErrorReceivedEventHandler(Comm_ErrorReceived);
                 serialPort1.PinChanged += new SerialPinChangedEventHandler(Comm_PinChangedReceived);
                 serialPort1.Open();
+                bw.RunWorkerAsync();
                 this.pictureBox1.Image = Image.FromFile(@".\lv.png");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.pictureBox1.Image = Image.FromFile(@".\hui.png");
-            }
-        }
-
-        /// <summary>
-        /// 获取port数据信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Comm_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            Byte[] InputBuf = new Byte[12];
-
-            try
-            {
-                serialPort1.Read(InputBuf, 0, serialPort1.BytesToRead);
-
-                string weightStr = "";
-                try
-                {
-                    Thread.Sleep(100);
-                    string str = encoding.GetString(InputBuf);
-                    if (str.Substring(0, 1) == "+")
-                    {
-                        double p = double.Parse(str.Substring(7, 1));
-                        double num = double.Parse(str.Substring(1, 6));
-                        double result = num / Math.Pow(10, p);
-                        weightStr = result.ToString("0.00");
-                    }
-                    if (str.Substring(1, 1) == "+")
-                    {
-                        double p = double.Parse(str.Substring(8, 1));
-                        double num = double.Parse(str.Substring(2, 6));
-                        double result = num / Math.Pow(10, p);
-                        weightStr = result.ToString("0.00");
-                    }
-                    this.save_weight(weightStr);
-
-
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show(ex.Message);
-                }
-                this.Invoke(disp_delegate, InputBuf);
-
-            }
-            catch (TimeoutException ex)         //超时处理  
-            {
-                MessageBox.Show(ex.Message);
             }
         }
 
@@ -143,38 +184,89 @@ namespace WeighPig
         }
 
         /// <summary>
+        /// 获取port数据信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void Comm_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        //{
+
+        //    ASCIIEncoding encoding = new ASCIIEncoding();
+        //    Byte[] InputBuf = new Byte[12];
+
+        //    try
+        //    {
+        //        serialPort1.Read(InputBuf, 0, serialPort1.BytesToRead);
+
+        //        string weightStr = "";
+        //        try
+        //        {
+        //            Thread.Sleep(100);
+        //            string str = encoding.GetString(InputBuf);
+        //            if (str.Substring(0, 1) == "+")
+        //            {
+        //                double p = double.Parse(str.Substring(7, 1));
+        //                double num = double.Parse(str.Substring(1, 6));
+        //                double result = num / Math.Pow(10, p);
+        //                weightStr = result.ToString("0.00");
+        //            }
+        //            if (str.Substring(1, 1) == "+")
+        //            {
+        //                double p = double.Parse(str.Substring(8, 1));
+        //                double num = double.Parse(str.Substring(2, 6));
+        //                double result = num / Math.Pow(10, p);
+        //                weightStr = result.ToString("0.00");
+        //            }
+        //            this.save_weight(weightStr);
+
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            //MessageBox.Show(ex.Message);
+        //        }
+        //        this.Invoke(disp_delegate, InputBuf);
+
+        //    }
+        //    catch (TimeoutException ex)         //超时处理  
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
+
+        /// <summary>
         /// 解析并回显数据
         /// </summary>
         /// <param name="InputBuf"></param>
-        private void DispUI(Byte[] InputBuf)
-        {
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            string weightStr = "";
-            this.textBox1.Text = this.textBox1.Text + encoding.GetString(InputBuf);
-            try
-            {
-                string str = encoding.GetString(InputBuf);
-                if (str.Substring(0, 1) == "+")
-                {
-                    double p = double.Parse(str.Substring(7, 1));
-                    double num = double.Parse(str.Substring(1, 6));
-                    double result = num / Math.Pow(10, p);
-                    weightStr = result.ToString("0.00");
-                }
-                if (str.Substring(1, 1) == "+")
-                {
-                    double p = double.Parse(str.Substring(8, 1));
-                    double num = double.Parse(str.Substring(2, 6));
-                    double result = num / Math.Pow(10, p);
-                    weightStr = result.ToString("0.00");
-                }
-                this.label_weight.Text = weightStr;
-            }
-            catch
-            {
+        //private void DispUI(Byte[] InputBuf)
+        //{
+        //    ASCIIEncoding encoding = new ASCIIEncoding();
+        //    string weightStr = "";
+        //    this.textBox1.Text = this.textBox1.Text + encoding.GetString(InputBuf);
+        //    try
+        //    {
+        //        string str = encoding.GetString(InputBuf);
+        //        if (str.Substring(0, 1) == "+")
+        //        {
+        //            double p = double.Parse(str.Substring(7, 1));
+        //            double num = double.Parse(str.Substring(1, 6));
+        //            double result = num / Math.Pow(10, p);
+        //            weightStr = result.ToString("0.00");
+        //        }
+        //        if (str.Substring(1, 1) == "+")
+        //        {
+        //            double p = double.Parse(str.Substring(8, 1));
+        //            double num = double.Parse(str.Substring(2, 6));
+        //            double result = num / Math.Pow(10, p);
+        //            weightStr = result.ToString("0.00");
+        //        }
+        //        this.label_weight.Text = weightStr;
+        //    }
+        //    catch
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         /// <summary>
         /// 初始化按钮
@@ -208,7 +300,8 @@ namespace WeighPig
         /// </summary>
         private void dataSource_weights()
         {
-            this.grid_weights.DataSource = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and DATE(create_time) = '" + today + "' order by sn desc;");
+            weights = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and DATE(create_time) = '" + today + "' order by sn desc;");
+            this.grid_weights.DataSource = weights;
             this.grid_weights.ClearSelection();
         }
 
@@ -255,18 +348,18 @@ namespace WeighPig
             if (double.Parse(weightStr) > 0)
             {
                 ssn++;
-                Weights weights = new Weights();
-                weights.sn = ssn;
-                weights.create_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                weights.weight = weightStr;
-                weights.level = "";
-                weights.remarks = this.input_remarks.Text;
-                weights.type = "白条";
-                weights.is_upload = 0;
-                weights.life_cycle = 1;
-                if (DbUtil.insertWeight(weights))
+                Weights w = new Weights();
+                w.sn = ssn;
+                w.create_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                w.weight = weightStr;
+                w.level = "";
+                w.remarks = this.input_remarks.Text;
+                w.type = "白条";
+                w.is_upload = 0;
+                w.life_cycle = 1;
+                if (DbUtil.insertWeight(w))
                 {
-                    this.dataSource_weights();
+                    this.addGridRow(w);
                     //MessageBox.Show("操作成功");
                 }
                 else
@@ -284,7 +377,7 @@ namespace WeighPig
 
             if (DbUtil.edit(sql))
             {
-                this.dataSource_weights();
+                this.grid_weights.Rows[0].Cells["level"].Value = levelStr;
                 //MessageBox.Show("操作成功");
             }
             else
@@ -360,7 +453,7 @@ namespace WeighPig
 
                 if (DbUtil.edit(sql))
                 {
-                    this.dataSource_weights();
+                    this.grid_weights.Rows[0].Cells["remarks"].Value = test.Text;
                     //MessageBox.Show("操作成功");
                 }
                 else
@@ -376,6 +469,12 @@ namespace WeighPig
             {
                 serialPort1.Close();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Weights w = new Weights();
+            w.id = ssn++;
         }
     }
 }
