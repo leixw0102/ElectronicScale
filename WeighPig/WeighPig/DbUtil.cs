@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
 namespace WeighPig
@@ -11,6 +12,28 @@ namespace WeighPig
     static class DbUtil
     {
         public static string Conn = "Database='xy_pig_data';Data Source='localhost';User Id='collecter';Password='xy123456';charset='utf8';pooling=true";
+
+        /// <summary>
+        /// 查询DataTable
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public static DataTable query(string sql)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                #region//查询数据
+                MySqlDataAdapter adapter = new MySqlDataAdapter(sql, Conn);
+                adapter.Fill(dt);
+                return dt;
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                return dt;
+            }
+        }
 
         /// <summary>
         /// 查询按钮list
