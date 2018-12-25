@@ -49,5 +49,11 @@ namespace WeighPig
             this.grid_reports.DataSource = DbUtil.queryReports("select level, count(1), sum(weight) from t_weights where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' group by level; ");
             this.grid_reports.ClearSelection();
         }
+
+        private void FormServiceSelect_Load(object sender, EventArgs e)
+        {
+            this.grid_weights.ClearSelection();
+            this.grid_reports.ClearSelection();
+        }
     }
 }

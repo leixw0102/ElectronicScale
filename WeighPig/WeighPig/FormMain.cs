@@ -89,14 +89,13 @@ namespace WeighPig
                 this.txtData.AppendText(result);
                 this.txtData.AppendText(";");
 
-                string weightStr = "";
                 try
                 {
                     double p = double.Parse(result.Substring(8, 1));
                     double num = double.Parse(result.Substring(2, 6));
-                    weightStr = (num / Math.Pow(10, p)).ToString("0.00");
-                    this.save_weight(weightStr);
-                    this.showWeight(weightStr);
+                    double weight_result = (num / Math.Pow(10, p));
+                    this.save_weight(weight_result);
+                    this.showWeight(weight_result);
                 }
                 catch
                 {
@@ -109,9 +108,9 @@ namespace WeighPig
             Debug.Write(Encoding.ASCII.GetString(sp.Data));
         }
 
-        private void showWeight(string weightStr)
+        private void showWeight(double weight_result)
         {
-            this.label_weight.Text = weightStr;
+            this.label_weight.Text = weight_result.ToString("0.00");
         }
         private void addGridRow(Weights w)
         {
@@ -182,91 +181,6 @@ namespace WeighPig
         {
             MessageBox.Show("端口发生错误，请重新连接");
         }
-
-        /// <summary>
-        /// 获取port数据信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private void Comm_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        //{
-
-        //    ASCIIEncoding encoding = new ASCIIEncoding();
-        //    Byte[] InputBuf = new Byte[12];
-
-        //    try
-        //    {
-        //        serialPort1.Read(InputBuf, 0, serialPort1.BytesToRead);
-
-        //        string weightStr = "";
-        //        try
-        //        {
-        //            Thread.Sleep(100);
-        //            string str = encoding.GetString(InputBuf);
-        //            if (str.Substring(0, 1) == "+")
-        //            {
-        //                double p = double.Parse(str.Substring(7, 1));
-        //                double num = double.Parse(str.Substring(1, 6));
-        //                double result = num / Math.Pow(10, p);
-        //                weightStr = result.ToString("0.00");
-        //            }
-        //            if (str.Substring(1, 1) == "+")
-        //            {
-        //                double p = double.Parse(str.Substring(8, 1));
-        //                double num = double.Parse(str.Substring(2, 6));
-        //                double result = num / Math.Pow(10, p);
-        //                weightStr = result.ToString("0.00");
-        //            }
-        //            this.save_weight(weightStr);
-
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            //MessageBox.Show(ex.Message);
-        //        }
-        //        this.Invoke(disp_delegate, InputBuf);
-
-        //    }
-        //    catch (TimeoutException ex)         //超时处理  
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
-
-        /// <summary>
-        /// 解析并回显数据
-        /// </summary>
-        /// <param name="InputBuf"></param>
-        //private void DispUI(Byte[] InputBuf)
-        //{
-        //    ASCIIEncoding encoding = new ASCIIEncoding();
-        //    string weightStr = "";
-        //    this.textBox1.Text = this.textBox1.Text + encoding.GetString(InputBuf);
-        //    try
-        //    {
-        //        string str = encoding.GetString(InputBuf);
-        //        if (str.Substring(0, 1) == "+")
-        //        {
-        //            double p = double.Parse(str.Substring(7, 1));
-        //            double num = double.Parse(str.Substring(1, 6));
-        //            double result = num / Math.Pow(10, p);
-        //            weightStr = result.ToString("0.00");
-        //        }
-        //        if (str.Substring(1, 1) == "+")
-        //        {
-        //            double p = double.Parse(str.Substring(8, 1));
-        //            double num = double.Parse(str.Substring(2, 6));
-        //            double result = num / Math.Pow(10, p);
-        //            weightStr = result.ToString("0.00");
-        //        }
-        //        this.label_weight.Text = weightStr;
-        //    }
-        //    catch
-        //    {
-
-        //    }
-        //}
 
         /// <summary>
         /// 初始化按钮
@@ -352,20 +266,21 @@ namespace WeighPig
         /// <summary>
         /// 保存明细数据
         /// </summary>
-        private void save_weight(string weightStr)
+        private void save_weight(double weight_result)
         {
-            if (double.Parse(weightStr) > 0)
+            if (weight_result > 0)
             {
                 ssn++;
                 Weights w = new Weights();
                 w.sn = ssn;
                 w.create_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                w.weight = weightStr;
+                w.weight = weight_result.ToString("0.00");
                 w.level = "";
                 w.remarks = this.input_remarks.Text;
                 w.type = "白条";
                 w.is_upload = 0;
                 w.life_cycle = 1;
+                w.is_handwrite = 0;
                 if (DbUtil.insertWeight(w))
                 {
                     if(this.grid_weights.RowCount == 0)
@@ -547,7 +462,22 @@ namespace WeighPig
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            int DeskHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            this.Height = DeskHeight - 100;
+            this.grid_weights.Height = DeskHeight - 400;
             this.grid_weights.ClearSelection();
+        }
+
+        /// <summary>
+        /// 补录数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void service_insert_Click(object sender, EventArgs e)
+        {
+            FormServiceInsert form = new FormServiceInsert();
+            form.Owner = this;
+            form.ShowDialog();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace WeighPig
         /// </summary>
         private void dataSource_weights()
         {
-            this.grid_weights.DataSource = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
+            this.grid_weights.DataSource = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and is_upload=0 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
             this.grid_weights.ClearSelection();
         }
 
@@ -74,16 +74,12 @@ namespace WeighPig
             if (this.grid_weights.SelectedCells.Count != 0)
             {
                 int r = this.grid_weights.SelectedCells[0].RowIndex;
-                Weights weights = new Weights();
-                weights.id = (int)this.grid_weights.Rows[r].Cells["id"].Value;
-                weights.sn = (int)this.grid_weights.Rows[r].Cells["sn"].Value;
-                weights.weight = (string)this.grid_weights.Rows[r].Cells["weight"].Value;
-                weights.level = this.combobox_labels.Text;
-                weights.remarks = this.input_remarks.Text;
-                weights.type = (string)this.grid_weights.Rows[r].Cells["type"].Value;
-                weights.is_upload = (int)this.grid_weights.Rows[r].Cells["is_upload"].Value;
-                weights.life_cycle = 1;
-                if (DbUtil.updateWeight(weights))
+                int id = (int)this.grid_weights.Rows[r].Cells["id"].Value;
+                string level = this.combobox_labels.Text;
+                string remarks = this.input_remarks.Text;
+                string sql = "update t_weights set level='" + level + "', remarks='" + remarks + "' where id=" + id;
+
+                if (DbUtil.edit(sql))
                 {
                     this.dataSource_weights();
                     MessageBox.Show("操作成功");
@@ -104,16 +100,11 @@ namespace WeighPig
             if (this.grid_weights.SelectedCells.Count != 0)
             {
                 int r = this.grid_weights.SelectedCells[0].RowIndex;
-                Weights weights = new Weights();
-                weights.id = (int)this.grid_weights.Rows[r].Cells["id"].Value;
-                weights.sn = (int)this.grid_weights.Rows[r].Cells["sn"].Value;
-                weights.weight = (string)this.grid_weights.Rows[r].Cells["weight"].Value;
-                weights.level = this.combobox_labels.Text;
-                weights.remarks = this.input_remarks.Text;
-                weights.type = (string)this.grid_weights.Rows[r].Cells["type"].Value;
-                weights.is_upload = (int)this.grid_weights.Rows[r].Cells["is_upload"].Value;
-                weights.life_cycle = -1;
-                if (DbUtil.updateWeight(weights))
+                int id = (int)this.grid_weights.Rows[r].Cells["id"].Value;
+
+                string sql = "update t_weights set life_cycle=-1 where id=" + id;
+
+                if (DbUtil.edit(sql))
                 {
                     this.dataSource_weights();
                     MessageBox.Show("操作成功");
@@ -139,5 +130,6 @@ namespace WeighPig
         {
             this.grid_weights.ClearSelection();
         }
+
     }
 }

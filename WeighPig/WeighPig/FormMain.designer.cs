@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.业务操作ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.修改数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.补录数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.service_update = new System.Windows.Forms.ToolStripMenuItem();
+            this.service_insert = new System.Windows.Forms.ToolStripMenuItem();
             this.上传数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.service_select = new System.Windows.Forms.ToolStripMenuItem();
             this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,6 +57,7 @@
             this.type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.remarks = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.is_upload = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.is_handwrite = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.life_cycle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -77,26 +78,27 @@
             // 业务操作ToolStripMenuItem
             // 
             this.业务操作ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.修改数据ToolStripMenuItem,
-            this.补录数据ToolStripMenuItem,
+            this.service_update,
+            this.service_insert,
             this.上传数据ToolStripMenuItem,
             this.service_select});
             this.业务操作ToolStripMenuItem.Name = "业务操作ToolStripMenuItem";
             this.业务操作ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
             this.业务操作ToolStripMenuItem.Text = "业务操作";
             // 
-            // 修改数据ToolStripMenuItem
+            // service_update
             // 
-            this.修改数据ToolStripMenuItem.Name = "修改数据ToolStripMenuItem";
-            this.修改数据ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.修改数据ToolStripMenuItem.Text = "修改数据";
-            this.修改数据ToolStripMenuItem.Click += new System.EventHandler(this.service_update_Click);
+            this.service_update.Name = "service_update";
+            this.service_update.Size = new System.Drawing.Size(124, 22);
+            this.service_update.Text = "修改数据";
+            this.service_update.Click += new System.EventHandler(this.service_update_Click);
             // 
-            // 补录数据ToolStripMenuItem
+            // service_insert
             // 
-            this.补录数据ToolStripMenuItem.Name = "补录数据ToolStripMenuItem";
-            this.补录数据ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.补录数据ToolStripMenuItem.Text = "补录数据";
+            this.service_insert.Name = "service_insert";
+            this.service_insert.Size = new System.Drawing.Size(124, 22);
+            this.service_insert.Text = "补录数据";
+            this.service_insert.Click += new System.EventHandler(this.service_insert_Click);
             // 
             // 上传数据ToolStripMenuItem
             // 
@@ -165,14 +167,14 @@
             // 
             // grid_weights
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.grid_weights.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grid_weights.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.grid_weights.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid_weights.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -183,28 +185,29 @@
             this.type,
             this.remarks,
             this.is_upload,
+            this.is_handwrite,
             this.life_cycle});
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.grid_weights.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grid_weights.DefaultCellStyle = dataGridViewCellStyle2;
             this.grid_weights.Location = new System.Drawing.Point(12, 229);
             this.grid_weights.Name = "grid_weights";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.grid_weights.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grid_weights.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.grid_weights.RowHeadersVisible = false;
             this.grid_weights.RowTemplate.Height = 23;
-            this.grid_weights.Size = new System.Drawing.Size(870, 447);
+            this.grid_weights.Size = new System.Drawing.Size(870, 492);
             this.grid_weights.TabIndex = 20;
             // 
             // panel_button
@@ -244,7 +247,7 @@
             this.txtData.Multiline = true;
             this.txtData.Name = "txtData";
             this.txtData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtData.Size = new System.Drawing.Size(467, 188);
+            this.txtData.Size = new System.Drawing.Size(467, 0);
             this.txtData.TabIndex = 24;
             // 
             // button_excel
@@ -263,7 +266,7 @@
             this.id.HeaderText = "Id";
             this.id.Name = "id";
             this.id.ReadOnly = true;
-            this.id.Width = 70;
+            this.id.Width = 50;
             // 
             // sn
             // 
@@ -301,6 +304,7 @@
             this.type.HeaderText = "工艺";
             this.type.Name = "type";
             this.type.ReadOnly = true;
+            this.type.Width = 80;
             // 
             // remarks
             // 
@@ -315,6 +319,15 @@
             this.is_upload.HeaderText = "上传";
             this.is_upload.Name = "is_upload";
             this.is_upload.ReadOnly = true;
+            this.is_upload.Width = 70;
+            // 
+            // is_handwrite
+            // 
+            this.is_handwrite.DataPropertyName = "is_handwrite";
+            this.is_handwrite.HeaderText = "补录";
+            this.is_handwrite.Name = "is_handwrite";
+            this.is_handwrite.ReadOnly = true;
+            this.is_handwrite.Width = 70;
             // 
             // life_cycle
             // 
@@ -329,7 +342,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1252, 688);
+            this.ClientSize = new System.Drawing.Size(1252, 733);
             this.Controls.Add(this.button_excel);
             this.Controls.Add(this.txtData);
             this.Controls.Add(this.input_remarks);
@@ -358,8 +371,8 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 业务操作ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 修改数据ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 补录数据ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem service_update;
+        private System.Windows.Forms.ToolStripMenuItem service_insert;
         private System.Windows.Forms.ToolStripMenuItem 上传数据ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem service_select;
         private System.Windows.Forms.ToolStripMenuItem 设置ToolStripMenuItem;
@@ -382,6 +395,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn type;
         private System.Windows.Forms.DataGridViewTextBoxColumn remarks;
         private System.Windows.Forms.DataGridViewTextBoxColumn is_upload;
+        private System.Windows.Forms.DataGridViewTextBoxColumn is_handwrite;
         private System.Windows.Forms.DataGridViewTextBoxColumn life_cycle;
     }
 }

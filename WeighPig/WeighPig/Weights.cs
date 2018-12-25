@@ -17,5 +17,6 @@ namespace WeighPig
         public string type { get; set; }
         public int is_upload { get; set; }
         public int life_cycle { get; set; }
+        public int is_handwrite { get; set; }
     }
 }

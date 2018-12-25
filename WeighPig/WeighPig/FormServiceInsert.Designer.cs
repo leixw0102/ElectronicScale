@@ -1,6 +1,6 @@
 ﻿namespace WeighPig
 {
-    partial class FormServiceUpdate
+    partial class FormServiceInsert
     {
         /// <summary>
         /// Required designer variable.
@@ -31,15 +31,18 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.input_date = new System.Windows.Forms.DateTimePicker();
-            this.label4 = new System.Windows.Forms.Label();
+            this.grid_weights = new System.Windows.Forms.DataGridView();
+            this.button_save = new System.Windows.Forms.Button();
+            this.input_remarks = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.combobox_labels = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.input_remarks = new System.Windows.Forms.TextBox();
-            this.button_save = new System.Windows.Forms.Button();
-            this.button_del = new System.Windows.Forms.Button();
-            this.grid_weights = new System.Windows.Forms.DataGridView();
+            this.input_date = new System.Windows.Forms.DateTimePicker();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.input_sn = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.input_weight = new System.Windows.Forms.TextBox();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.create_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,84 +55,6 @@
             this.life_cycle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grid_weights)).BeginInit();
             this.SuspendLayout();
-            // 
-            // input_date
-            // 
-            this.input_date.Location = new System.Drawing.Point(60, 7);
-            this.input_date.Name = "input_date";
-            this.input_date.Size = new System.Drawing.Size(197, 21);
-            this.input_date.TabIndex = 18;
-            this.input_date.ValueChanged += new System.EventHandler(this.input_date_ValueChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(12, 9);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(40, 16);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "时间";
-            // 
-            // combobox_labels
-            // 
-            this.combobox_labels.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.combobox_labels.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::WeighPig.Properties.Settings.Default, "comParity", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.combobox_labels.FormattingEnabled = true;
-            this.combobox_labels.Location = new System.Drawing.Point(976, 47);
-            this.combobox_labels.Name = "combobox_labels";
-            this.combobox_labels.Size = new System.Drawing.Size(155, 20);
-            this.combobox_labels.TabIndex = 24;
-            this.combobox_labels.Text = global::WeighPig.Properties.Settings.Default.comParity;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(923, 48);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 16);
-            this.label3.TabIndex = 23;
-            this.label3.Text = "级别";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(923, 105);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 16);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "备注";
-            // 
-            // input_remarks
-            // 
-            this.input_remarks.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.input_remarks.Location = new System.Drawing.Point(976, 102);
-            this.input_remarks.Multiline = true;
-            this.input_remarks.Name = "input_remarks";
-            this.input_remarks.Size = new System.Drawing.Size(155, 230);
-            this.input_remarks.TabIndex = 26;
-            // 
-            // button_save
-            // 
-            this.button_save.Location = new System.Drawing.Point(926, 374);
-            this.button_save.Name = "button_save";
-            this.button_save.Size = new System.Drawing.Size(75, 23);
-            this.button_save.TabIndex = 27;
-            this.button_save.Text = "保存";
-            this.button_save.UseVisualStyleBackColor = true;
-            this.button_save.Click += new System.EventHandler(this.button_save_Click);
-            // 
-            // button_del
-            // 
-            this.button_del.Location = new System.Drawing.Point(1056, 374);
-            this.button_del.Name = "button_del";
-            this.button_del.Size = new System.Drawing.Size(75, 23);
-            this.button_del.TabIndex = 28;
-            this.button_del.Text = "作废";
-            this.button_del.UseVisualStyleBackColor = true;
-            this.button_del.Click += new System.EventHandler(this.button_del_Click);
             // 
             // grid_weights
             // 
@@ -161,7 +86,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.grid_weights.DefaultCellStyle = dataGridViewCellStyle2;
-            this.grid_weights.Location = new System.Drawing.Point(15, 34);
+            this.grid_weights.Location = new System.Drawing.Point(15, 37);
             this.grid_weights.MultiSelect = false;
             this.grid_weights.Name = "grid_weights";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -176,8 +101,109 @@
             this.grid_weights.RowTemplate.Height = 23;
             this.grid_weights.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grid_weights.Size = new System.Drawing.Size(870, 447);
-            this.grid_weights.TabIndex = 29;
-            this.grid_weights.Click += new System.EventHandler(this.grid_weights_Click);
+            this.grid_weights.TabIndex = 37;
+            // 
+            // button_save
+            // 
+            this.button_save.Location = new System.Drawing.Point(976, 309);
+            this.button_save.Name = "button_save";
+            this.button_save.Size = new System.Drawing.Size(75, 23);
+            this.button_save.TabIndex = 36;
+            this.button_save.Text = "保存";
+            this.button_save.UseVisualStyleBackColor = true;
+            this.button_save.Click += new System.EventHandler(this.button_save_Click);
+            // 
+            // input_remarks
+            // 
+            this.input_remarks.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.input_remarks.Location = new System.Drawing.Point(976, 174);
+            this.input_remarks.Multiline = true;
+            this.input_remarks.Name = "input_remarks";
+            this.input_remarks.Size = new System.Drawing.Size(155, 110);
+            this.input_remarks.TabIndex = 35;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(923, 177);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 16);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "备注";
+            // 
+            // combobox_labels
+            // 
+            this.combobox_labels.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.combobox_labels.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::WeighPig.Properties.Settings.Default, "comParity", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.combobox_labels.FormattingEnabled = true;
+            this.combobox_labels.Location = new System.Drawing.Point(976, 126);
+            this.combobox_labels.Name = "combobox_labels";
+            this.combobox_labels.Size = new System.Drawing.Size(155, 20);
+            this.combobox_labels.TabIndex = 33;
+            this.combobox_labels.Text = global::WeighPig.Properties.Settings.Default.comParity;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(923, 125);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 16);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "级别";
+            // 
+            // input_date
+            // 
+            this.input_date.Enabled = false;
+            this.input_date.Location = new System.Drawing.Point(60, 10);
+            this.input_date.Name = "input_date";
+            this.input_date.Size = new System.Drawing.Size(197, 21);
+            this.input_date.TabIndex = 31;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(12, 12);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(40, 16);
+            this.label4.TabIndex = 30;
+            this.label4.Text = "时间";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(907, 37);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 16);
+            this.label2.TabIndex = 38;
+            this.label2.Text = "流水号";
+            // 
+            // input_sn
+            // 
+            this.input_sn.Location = new System.Drawing.Point(976, 32);
+            this.input_sn.Name = "input_sn";
+            this.input_sn.Size = new System.Drawing.Size(155, 21);
+            this.input_sn.TabIndex = 39;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(923, 77);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(40, 16);
+            this.label5.TabIndex = 40;
+            this.label5.Text = "重量";
+            // 
+            // input_weight
+            // 
+            this.input_weight.Location = new System.Drawing.Point(976, 77);
+            this.input_weight.Name = "input_weight";
+            this.input_weight.Size = new System.Drawing.Size(155, 21);
+            this.input_weight.TabIndex = 41;
             // 
             // id
             // 
@@ -256,13 +282,16 @@
             this.life_cycle.Visible = false;
             this.life_cycle.Width = 50;
             // 
-            // FormServiceUpdate
+            // FormServiceInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1143, 495);
+            this.Controls.Add(this.input_weight);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.input_sn);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.grid_weights);
-            this.Controls.Add(this.button_del);
             this.Controls.Add(this.button_save);
             this.Controls.Add(this.input_remarks);
             this.Controls.Add(this.label1);
@@ -271,10 +300,10 @@
             this.Controls.Add(this.input_date);
             this.Controls.Add(this.label4);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "FormServiceUpdate";
-            this.Text = "修改数据";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormServiceUpdate_FormClosed);
-            this.Load += new System.EventHandler(this.FormServiceUpdate_Load);
+            this.Name = "FormServiceInsert";
+            this.Text = "补录数据";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormServiceInsert_FormClosed);
+            this.Load += new System.EventHandler(this.FormServiceInsert_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grid_weights)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -283,15 +312,18 @@
 
         #endregion
 
-        private System.Windows.Forms.DateTimePicker input_date;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridView grid_weights;
+        private System.Windows.Forms.Button button_save;
+        private System.Windows.Forms.TextBox input_remarks;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox combobox_labels;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox input_remarks;
-        private System.Windows.Forms.Button button_save;
-        private System.Windows.Forms.Button button_del;
-        private System.Windows.Forms.DataGridView grid_weights;
+        private System.Windows.Forms.DateTimePicker input_date;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox input_sn;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox input_weight;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn sn;
         private System.Windows.Forms.DataGridViewTextBoxColumn create_time;

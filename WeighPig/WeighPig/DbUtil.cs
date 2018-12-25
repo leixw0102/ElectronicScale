@@ -230,6 +230,7 @@ namespace WeighPig
                             w.type = reader.GetString(6);
                             w.is_upload = reader.GetInt32(7);
                             w.life_cycle = reader.GetInt32(8);
+                            w.is_handwrite = reader.GetInt32(9);
                             weights.Add(w);
                         }
                     }
@@ -274,8 +275,8 @@ namespace WeighPig
 
                 #region//插入数据
                 StringBuilder strSql = new StringBuilder();
-                strSql.AppendFormat(@"insert into t_weights (sn, create_time, weight, level, remarks, type, is_upload, life_cycle)
-                values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}')",
+                strSql.AppendFormat(@"insert into t_weights (sn, create_time, weight, level, remarks, type, is_upload, life_cycle, is_handwrite)
+                values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')",
                                 weights.sn,
                                 weights.create_time,
                                 weights.weight,
@@ -283,7 +284,8 @@ namespace WeighPig
                                 weights.remarks,
                                 weights.type,
                                 weights.is_upload,
-                                weights.life_cycle);
+                                weights.life_cycle,
+                                weights.is_handwrite);
                 MySqlCommand cmd_insert = new MySqlCommand(strSql.ToString(), conn);
                 try
                 {
