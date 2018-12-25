@@ -32,7 +32,7 @@ namespace WeighPig
         }
 
         /// <summary>
-        /// 初始化标签
+        /// 初始化级别
         /// </summary>
         private void dataSource_labels()
         {
@@ -127,6 +127,17 @@ namespace WeighPig
             {
                 MessageBox.Show("请选择一条数据");
             }
+        }
+
+        private void FormServiceUpdate_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FormMain f1 = (FormMain)this.Owner;
+            f1.dataSource_weights();
+        }
+
+        private void FormServiceUpdate_Load(object sender, EventArgs e)
+        {
+            this.grid_weights.ClearSelection();
         }
     }
 }

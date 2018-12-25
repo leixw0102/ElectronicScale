@@ -11,29 +11,8 @@ namespace WeighPig
 {
     static class DbUtil
     {
-        public static string Conn = "Database='xy_pig_data';Data Source='localhost';User Id='collecter';Password='xy123456';charset='utf8';pooling=true";
-
-        /// <summary>
-        /// 查询DataTable
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        public static DataTable query(string sql)
-        {
-            DataTable dt = new DataTable();
-            try
-            {
-                #region//查询数据
-                MySqlDataAdapter adapter = new MySqlDataAdapter(sql, Conn);
-                adapter.Fill(dt);
-                return dt;
-                #endregion
-            }
-            catch (Exception ex)
-            {
-                return dt;
-            }
-        }
+        //public static string Conn = "Database='xy_pig_data';Data Source='localhost';User Id='collecter';Password='xy123456';charset='utf8';pooling=true";
+        public static string Conn = "Database='pig';Data Source='123.150.143.151';User Id='root';Password='jqt2017*';charset='utf8';pooling=true";
 
         /// <summary>
         /// 查询按钮list
@@ -92,7 +71,7 @@ namespace WeighPig
         }
 
         /// <summary>
-        /// 保存按钮list
+        /// 保存标签
         /// </summary>
         /// <param name="buttons"></param>
         /// <returns></returns>
@@ -134,6 +113,90 @@ namespace WeighPig
             }
         }
 
+        public static bool insertLabelItem(LabelItem labelItem)
+        {
+            MySqlConnection conn = new MySqlConnection(Conn);
+            try
+            {
+                //打开连接  
+                conn.Open();
+
+                #region//插入数据
+                StringBuilder strSql = new StringBuilder();
+                strSql.AppendFormat(@"insert into t_labels (name, btn, life_cycle) values('{0}', '{1}', '{2}')",
+                                labelItem.name,
+                                labelItem.btn,
+                                labelItem.life_cycle);
+                MySqlCommand cmd_insert = new MySqlCommand(strSql.ToString(), conn);
+                try
+                {
+                    cmd_insert.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                //调用Close方法即使关闭连接   
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改标签
+        /// </summary>
+        /// <param name="weights"></param>
+        /// <returns></returns>
+        public static bool updateLabelItem(LabelItem lableItem)
+        {
+            MySqlConnection conn = new MySqlConnection(Conn);
+            try
+            {
+                //打开连接  
+                conn.Open();
+
+                StringBuilder strSql = new StringBuilder();
+                strSql.AppendFormat(@"update t_labels set name='{0}',btn='{1}',life_cycle='{2}' where id={3}",
+                                lableItem.name,
+                                lableItem.btn,
+                                lableItem.life_cycle,
+                                lableItem.id);
+
+                MySqlCommand cmd_insert = new MySqlCommand(strSql.ToString(), conn);
+                try
+                {
+                    cmd_insert.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                //调用Close方法即使关闭连接   
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
         /// <summary>
         /// 查询明细list
         /// </summary>
@@ -247,6 +310,11 @@ namespace WeighPig
             }
         }
 
+        /// <summary>
+        /// 修改明细
+        /// </summary>
+        /// <param name="weights"></param>
+        /// <returns></returns>
         public static bool updateWeight(Weights weights)
         {
             MySqlConnection conn = new MySqlConnection(Conn);

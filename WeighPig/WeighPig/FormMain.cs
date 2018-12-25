@@ -48,8 +48,6 @@ namespace WeighPig
 
             this.dataSource_weights();
 
-            ssn = this.grid_weights.RowCount;
-
             bw.WorkerSupportsCancellation = true;
             bw.WorkerReportsProgress = true;
             bw.DoWork += Bw_DoWork;
@@ -117,6 +115,7 @@ namespace WeighPig
         }
         private void addGridRow(Weights w)
         {
+            w.id = (int)this.grid_weights.Rows[0].Cells["id"].Value + 1;
             if (weights.Count == 0)
             {
                 weights.Add(w);
@@ -125,8 +124,9 @@ namespace WeighPig
             {
                 weights.Insert(0, w);
             }
-            this.grid_weights.DataSource = null;
+            this.grid_weights.DataSource = new List<Weights>();
             this.grid_weights.DataSource = weights;
+            this.grid_weights.ClearSelection();
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace WeighPig
         public void data_buttons()
         {
             this.panel_button.Controls.Clear();
-            buttons = DbUtil.queryButtons("select * from t_labels order by id");
+            buttons = DbUtil.queryButtons("select * from t_labels where life_cycle = 1 order by id");
             int i = 0;
             foreach (LabelItem item in buttons)
             {
@@ -298,11 +298,20 @@ namespace WeighPig
         /// <summary>
         /// 初始化明细grid
         /// </summary>
-        private void dataSource_weights()
+        public void dataSource_weights()
         {
             weights = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and DATE(create_time) = '" + today + "' order by sn desc;");
             this.grid_weights.DataSource = weights;
             this.grid_weights.ClearSelection();
+
+            if (this.grid_weights.RowCount > 0)
+            {
+                ssn = (int)this.grid_weights.Rows[0].Cells["sn"].Value;
+            }
+            else
+            {
+                ssn = 0;
+            }
         }
 
         /// <summary>
@@ -359,7 +368,14 @@ namespace WeighPig
                 w.life_cycle = 1;
                 if (DbUtil.insertWeight(w))
                 {
-                    this.addGridRow(w);
+                    if(this.grid_weights.RowCount == 0)
+                    {
+                        this.dataSource_weights();
+                    }
+                    else
+                    {
+                        this.addGridRow(w);
+                    }
                     //MessageBox.Show("操作成功");
                 }
                 else
@@ -387,7 +403,7 @@ namespace WeighPig
         }
 
         /// <summary>
-        /// 标签设置
+        /// 级别设置
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -471,10 +487,67 @@ namespace WeighPig
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button_excel_Click(object sender, EventArgs e)
         {
-            Weights w = new Weights();
-            w.id = ssn++;
+            this.dataSource_weights();
+            ExportExcels(today, this.grid_weights);
+        }
+        private void ExportExcels(string fileName, DataGridView myDGV)
+        {
+            string saveFileName = "";
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.DefaultExt = "xls";
+            saveDialog.Filter = "Excel文件|*.xls";
+            saveDialog.FileName = fileName;
+            saveDialog.ShowDialog();
+            saveFileName = saveDialog.FileName;
+            if (saveFileName.IndexOf(":") < 0)
+            {
+                return; //被点了取消
+            }
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            if (xlApp == null)
+            {
+                MessageBox.Show("无法创建Excel对象，可能您的机子未安装Excel");
+                return;
+            }
+            Microsoft.Office.Interop.Excel.Workbooks workbooks = xlApp.Workbooks;
+            Microsoft.Office.Interop.Excel.Workbook workbook = workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Worksheets[1];//取得sheet1
+                                                                                                                                  //写入标题
+            for (int i = 0; i < myDGV.ColumnCount; i++)
+            {
+                worksheet.Cells[1, i + 1] = myDGV.Columns[i].HeaderText;
+            }
+            //写入数值
+            for (int r = 0; r < myDGV.Rows.Count; r++)
+            {
+                for (int i = 0; i < myDGV.ColumnCount; i++)
+                {
+                    worksheet.Cells[r + 2, i + 1] = myDGV.Rows[r].Cells[i].Value;
+                }
+                System.Windows.Forms.Application.DoEvents();
+            }
+            worksheet.Columns.EntireColumn.AutoFit();//列宽自适应
+            if (saveFileName != "")
+            {
+                try
+                {
+                    workbook.Saved = true;
+                    workbook.SaveCopyAs(saveFileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("导出文件时出错,文件可能正被打开！\n" + ex.Message);
+                }
+            }
+            xlApp.Quit();
+            MessageBox.Show("文件： " + fileName + ".xls 保存成功", "信息提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            this.grid_weights.ClearSelection();
         }
     }
 }

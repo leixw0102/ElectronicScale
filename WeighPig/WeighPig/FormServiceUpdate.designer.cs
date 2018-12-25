@@ -31,12 +31,6 @@
             this.input_date = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.grid_weights = new System.Windows.Forms.DataGridView();
-            this.combobox_labels = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.input_remarks = new System.Windows.Forms.TextBox();
-            this.button_save = new System.Windows.Forms.Button();
-            this.button_del = new System.Windows.Forms.Button();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.create_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,6 +40,12 @@
             this.remarks = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.is_upload = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.life_cycle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.combobox_labels = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.input_remarks = new System.Windows.Forms.TextBox();
+            this.button_save = new System.Windows.Forms.Button();
+            this.button_del = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grid_weights)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,6 +90,76 @@
             this.grid_weights.TabIndex = 22;
             this.grid_weights.Click += new System.EventHandler(this.grid_weights_Click);
             // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "Id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Width = 40;
+            // 
+            // sn
+            // 
+            this.sn.DataPropertyName = "sn";
+            this.sn.HeaderText = "顺序号";
+            this.sn.Name = "sn";
+            this.sn.ReadOnly = true;
+            this.sn.Width = 70;
+            // 
+            // create_time
+            // 
+            this.create_time.DataPropertyName = "create_time";
+            this.create_time.HeaderText = "时间";
+            this.create_time.Name = "create_time";
+            this.create_time.ReadOnly = true;
+            this.create_time.Width = 120;
+            // 
+            // weight
+            // 
+            this.weight.DataPropertyName = "weight";
+            this.weight.HeaderText = "重量";
+            this.weight.Name = "weight";
+            this.weight.ReadOnly = true;
+            this.weight.Width = 60;
+            // 
+            // level
+            // 
+            this.level.DataPropertyName = "level";
+            this.level.HeaderText = "级别";
+            this.level.Name = "level";
+            this.level.ReadOnly = true;
+            this.level.Width = 60;
+            // 
+            // type
+            // 
+            this.type.DataPropertyName = "type";
+            this.type.HeaderText = "工艺";
+            this.type.Name = "type";
+            this.type.ReadOnly = true;
+            this.type.Width = 60;
+            // 
+            // remarks
+            // 
+            this.remarks.DataPropertyName = "remarks";
+            this.remarks.HeaderText = "备注";
+            this.remarks.Name = "remarks";
+            this.remarks.ReadOnly = true;
+            // 
+            // is_upload
+            // 
+            this.is_upload.DataPropertyName = "is_upload";
+            this.is_upload.HeaderText = "上传";
+            this.is_upload.Name = "is_upload";
+            this.is_upload.ReadOnly = true;
+            this.is_upload.Width = 60;
+            // 
+            // life_cycle
+            // 
+            this.life_cycle.DataPropertyName = "life_cycle";
+            this.life_cycle.HeaderText = "生命周期";
+            this.life_cycle.Name = "life_cycle";
+            this.life_cycle.Visible = false;
+            // 
             // combobox_labels
             // 
             this.combobox_labels.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -109,7 +179,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 16);
             this.label3.TabIndex = 23;
-            this.label3.Text = "标签";
+            this.label3.Text = "级别";
             // 
             // label1
             // 
@@ -150,76 +220,6 @@
             this.button_del.UseVisualStyleBackColor = true;
             this.button_del.Click += new System.EventHandler(this.button_del_Click);
             // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "Id";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Width = 40;
-            // 
-            // sn
-            // 
-            this.sn.DataPropertyName = "sn";
-            this.sn.HeaderText = "顺序号";
-            this.sn.Name = "sn";
-            this.sn.ReadOnly = true;
-            this.sn.Width = 70;
-            // 
-            // create_time
-            // 
-            this.create_time.DataPropertyName = "create_time";
-            this.create_time.HeaderText = "时间";
-            this.create_time.Name = "create_time";
-            this.create_time.ReadOnly = true;
-            this.create_time.Width = 120;
-            // 
-            // weight
-            // 
-            this.weight.DataPropertyName = "weight";
-            this.weight.HeaderText = "重量";
-            this.weight.Name = "weight";
-            this.weight.ReadOnly = true;
-            this.weight.Width = 60;
-            // 
-            // level
-            // 
-            this.level.DataPropertyName = "level";
-            this.level.HeaderText = "标签";
-            this.level.Name = "level";
-            this.level.ReadOnly = true;
-            this.level.Width = 60;
-            // 
-            // type
-            // 
-            this.type.DataPropertyName = "type";
-            this.type.HeaderText = "工艺";
-            this.type.Name = "type";
-            this.type.ReadOnly = true;
-            this.type.Width = 60;
-            // 
-            // remarks
-            // 
-            this.remarks.DataPropertyName = "remarks";
-            this.remarks.HeaderText = "备注";
-            this.remarks.Name = "remarks";
-            this.remarks.ReadOnly = true;
-            // 
-            // is_upload
-            // 
-            this.is_upload.DataPropertyName = "is_upload";
-            this.is_upload.HeaderText = "上传";
-            this.is_upload.Name = "is_upload";
-            this.is_upload.ReadOnly = true;
-            this.is_upload.Width = 60;
-            // 
-            // life_cycle
-            // 
-            this.life_cycle.DataPropertyName = "life_cycle";
-            this.life_cycle.HeaderText = "生命周期";
-            this.life_cycle.Name = "life_cycle";
-            this.life_cycle.Visible = false;
-            // 
             // FormServiceUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -234,8 +234,11 @@
             this.Controls.Add(this.grid_weights);
             this.Controls.Add(this.input_date);
             this.Controls.Add(this.label4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FormServiceUpdate";
             this.Text = "修改数据";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormServiceUpdate_FormClosed);
+            this.Load += new System.EventHandler(this.FormServiceUpdate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grid_weights)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
