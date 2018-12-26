@@ -9,7 +9,8 @@ namespace WeighPig
     class Reports
     {
         public string report_level { get; set; }
-        public string report_count { get; set; }
-        public string report_weight { get; set; }
+        public int report_count { get; set; }
+        public double report_weight { get; set; }
+        public double report_average { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace WeighPig
 {
     class Weights
     {
-        public int id { get; set; }
+        public string id { get; set; }
         public int sn { get; set; }
         public string create_time { get; set; }
         public string weight { get; set; }
@@ -18,5 +18,6 @@ namespace WeighPig
         public int is_upload { get; set; }
         public int life_cycle { get; set; }
         public int is_handwrite { get; set; }
+        public int row_num { get; set; }
     }
 }

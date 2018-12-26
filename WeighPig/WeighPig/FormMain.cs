@@ -80,11 +80,11 @@ namespace WeighPig
         {
             var sp = e.UserState as SerialProgress;
 
-            if(result.Length < 12)
+            if (result.Length < 12)
             {
                 result += Encoding.ASCII.GetString(sp.Data);
             }
-            if(result.Length == 12)
+            if (result.Length == 12)
             {
                 this.txtData.AppendText(result);
                 this.txtData.AppendText(";");
@@ -114,18 +114,12 @@ namespace WeighPig
         }
         private void addGridRow(Weights w)
         {
-            w.id = (int)this.grid_weights.Rows[0].Cells["id"].Value + 1;
-            if (weights.Count == 0)
-            {
-                weights.Add(w);
-            }
-            else
-            {
-                weights.Insert(0, w);
-            }
+            w.row_num = this.grid_weights.RowCount + 1;
+            weights.Add(w);
             this.grid_weights.DataSource = new List<Weights>();
             this.grid_weights.DataSource = weights;
             this.grid_weights.ClearSelection();
+            this.grid_weights.FirstDisplayedScrollingRowIndex = this.grid_weights.Rows.Count - 1;
         }
 
         /// <summary>
@@ -135,7 +129,7 @@ namespace WeighPig
         {
             try
             {
-                if(serialPort1 != null && serialPort1.IsOpen)
+                if (serialPort1 != null && serialPort1.IsOpen)
                 {
                     serialPort1.Close();
                 }
@@ -214,9 +208,13 @@ namespace WeighPig
         /// </summary>
         public void dataSource_weights()
         {
-            weights = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and DATE(create_time) = '" + today + "' order by sn desc;");
+            weights = DbUtil.queryWeights("select w.*, (@i:=@i+1) i from t_weights w,(select @i:=0) t2 where life_cycle=1 and DATE(create_time) = '" + today + "' order by sn;");
             this.grid_weights.DataSource = weights;
             this.grid_weights.ClearSelection();
+            if(this.grid_weights.RowCount > 0)
+            {
+                this.grid_weights.FirstDisplayedScrollingRowIndex = this.grid_weights.Rows.Count - 1;
+            }
 
             if (this.grid_weights.RowCount > 0)
             {
@@ -268,10 +266,11 @@ namespace WeighPig
         /// </summary>
         private void save_weight(double weight_result)
         {
-            if (weight_result > 0)
+            if (weight_result > 15)
             {
                 ssn++;
                 Weights w = new Weights();
+                w.id = Guid.NewGuid().ToString();
                 w.sn = ssn;
                 w.create_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 w.weight = weight_result.ToString("0.00");
@@ -283,7 +282,7 @@ namespace WeighPig
                 w.is_handwrite = 0;
                 if (DbUtil.insertWeight(w))
                 {
-                    if(this.grid_weights.RowCount == 0)
+                    if (this.grid_weights.RowCount == 0)
                     {
                         this.dataSource_weights();
                     }
@@ -300,15 +299,16 @@ namespace WeighPig
             }
         }
         /// <summary>
-        /// 下一条数据前更新明细数据
+        /// 更新级别
         /// </summary>
         private void update_weight_level(string levelStr)
         {
-            string sql = "update t_weights set level='" + levelStr + "' where sn = '" + ssn + "' and  DATE(create_time) = '" + today + "'";
+            string id = (string)this.grid_weights.Rows[this.grid_weights.RowCount - 1].Cells["id"].Value;
+            string sql = "update t_weights set level='" + levelStr + "' where id = '" + id + "'";
 
             if (DbUtil.edit(sql))
             {
-                this.grid_weights.Rows[0].Cells["level"].Value = levelStr;
+                this.grid_weights.Rows[this.grid_weights.RowCount - 1].Cells["level"].Value = levelStr;
                 //MessageBox.Show("操作成功");
             }
             else
@@ -380,11 +380,12 @@ namespace WeighPig
             if (e.KeyCode == Keys.Enter)
             {
                 TextBox test = (TextBox)sender;
-                string sql = "update t_weights set remarks='" + test.Text + "' where sn = '" + ssn + "' and  DATE(create_time) = '" + today + "'";
+                string id = (string)this.grid_weights.Rows[this.grid_weights.RowCount - 1].Cells["id"].Value;
+                string sql = "update t_weights set remarks='" + test.Text + "' where id = '" + id + "'";
 
                 if (DbUtil.edit(sql))
                 {
-                    this.grid_weights.Rows[0].Cells["remarks"].Value = test.Text;
+                    this.grid_weights.Rows[this.grid_weights.RowCount - 1].Cells["remarks"].Value = test.Text;
                     //MessageBox.Show("操作成功");
                 }
                 else
@@ -429,20 +430,47 @@ namespace WeighPig
             Microsoft.Office.Interop.Excel.Workbooks workbooks = xlApp.Workbooks;
             Microsoft.Office.Interop.Excel.Workbook workbook = workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
             Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Worksheets[1];//取得sheet1
-                                                                                                                                  //写入标题
-            for (int i = 0; i < myDGV.ColumnCount; i++)
+            List<Weights> list = DbUtil.queryWeights("select w.*, (@i:=@i+1) i from t_weights w,(select @i:=0) t2 where life_cycle=1 and DATE(create_time) = '" + today + "' order by sn;");                                                                                                    //写入标题
+            worksheet.Cells[1, 1] = "序号";
+            worksheet.Cells[1, 2] = "顺序号";
+            worksheet.Cells[1, 3] = "时间";
+            worksheet.Cells[1, 4] = "重量";
+            worksheet.Cells[1, 5] = "级别";
+            worksheet.Cells[1, 6] = "备注";
+            worksheet.Cells[1, 7] = "工艺";
+            worksheet.Cells[1, 8] = "上传";
+            worksheet.Cells[1, 9] = "补录";
+            for (int r = 0; r < list.Count; r++)
             {
-                worksheet.Cells[1, i + 1] = myDGV.Columns[i].HeaderText;
+                worksheet.Cells[r + 2, 1] = list[r].row_num;
+                worksheet.Cells[r + 2, 2] = list[r].sn;
+                worksheet.Cells[r + 2, 3] = list[r].create_time;
+                worksheet.Cells[r + 2, 4] = list[r].weight;
+                worksheet.Cells[r + 2, 5] = list[r].level;
+                worksheet.Cells[r + 2, 6] = list[r].remarks;
+                worksheet.Cells[r + 2, 7] = list[r].type;
+                worksheet.Cells[r + 2, 8] = list[r].is_upload;
+                worksheet.Cells[r + 2, 9] = list[r].is_handwrite;
             }
-            //写入数值
-            for (int r = 0; r < myDGV.Rows.Count; r++)
-            {
-                for (int i = 0; i < myDGV.ColumnCount; i++)
-                {
-                    worksheet.Cells[r + 2, i + 1] = myDGV.Rows[r].Cells[i].Value;
-                }
-                System.Windows.Forms.Application.DoEvents();
-            }
+            //for (int i = 0; i < myDGV.ColumnCount; i++)
+            //{
+            //    if (myDGV.Columns[i].Visible)
+            //    {
+            //        worksheet.Cells[1, i + 1] = myDGV.Columns[i].HeaderText;
+            //    }
+            //}
+            ////写入数值
+            //for (int r = 0; r < myDGV.Rows.Count; r++)
+            //{
+            //    for (int i = 0; i < myDGV.ColumnCount; i++)
+            //    {
+            //        if (myDGV.Rows[r].Cells[i].Visible)
+            //        {
+            //            worksheet.Cells[r + 2, i + 1] = myDGV.Rows[r].Cells[i].Value;
+            //        }
+            //    }
+            //    System.Windows.Forms.Application.DoEvents();
+            //}
             worksheet.Columns.EntireColumn.AutoFit();//列宽自适应
             if (saveFileName != "")
             {
@@ -478,6 +506,23 @@ namespace WeighPig
             FormServiceInsert form = new FormServiceInsert();
             form.Owner = this;
             form.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            Weights w = new Weights();
+            w.id = Guid.NewGuid().ToString();
+            w.sn = ssn;
+            w.create_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            w.weight = "0.00";
+            w.level = "";
+            w.remarks = this.input_remarks.Text;
+            w.type = "白条";
+            w.is_upload = 0;
+            w.life_cycle = 1;
+            w.is_handwrite = 0;
+            this.addGridRow(w);
         }
     }
 }

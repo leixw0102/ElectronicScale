@@ -45,7 +45,7 @@ namespace WeighPig
         /// </summary>
         private void dataSource_weights()
         {
-            this.grid_weights.DataSource = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and is_upload=0 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
+            this.grid_weights.DataSource = DbUtil.queryWeights("select w.*, (@i:=@i+1) i from t_weights w,(select @i:=0) t2 where life_cycle=1 and is_upload=0 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
             this.grid_weights.ClearSelection();
         }
 
@@ -74,10 +74,10 @@ namespace WeighPig
             if (this.grid_weights.SelectedCells.Count != 0)
             {
                 int r = this.grid_weights.SelectedCells[0].RowIndex;
-                int id = (int)this.grid_weights.Rows[r].Cells["id"].Value;
+                string id = (string)this.grid_weights.Rows[r].Cells["id"].Value;
                 string level = this.combobox_labels.Text;
                 string remarks = this.input_remarks.Text;
-                string sql = "update t_weights set level='" + level + "', remarks='" + remarks + "' where id=" + id;
+                string sql = "update t_weights set level='" + level + "', remarks='" + remarks + "' where id='" + id + "'";
 
                 if (DbUtil.edit(sql))
                 {
@@ -100,9 +100,9 @@ namespace WeighPig
             if (this.grid_weights.SelectedCells.Count != 0)
             {
                 int r = this.grid_weights.SelectedCells[0].RowIndex;
-                int id = (int)this.grid_weights.Rows[r].Cells["id"].Value;
+                string id = (string)this.grid_weights.Rows[r].Cells["id"].Value;
 
-                string sql = "update t_weights set life_cycle=-1 where id=" + id;
+                string sql = "update t_weights set life_cycle=-1 where id='" + id + "'";
 
                 if (DbUtil.edit(sql))
                 {

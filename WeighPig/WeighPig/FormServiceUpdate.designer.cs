@@ -41,6 +41,7 @@
             this.button_del = new System.Windows.Forms.Button();
             this.grid_weights = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.row_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.create_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -144,6 +145,7 @@
             this.grid_weights.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid_weights.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
+            this.row_num,
             this.sn,
             this.create_time,
             this.weight,
@@ -185,7 +187,16 @@
             this.id.HeaderText = "Id";
             this.id.Name = "id";
             this.id.ReadOnly = true;
+            this.id.Visible = false;
             this.id.Width = 50;
+            // 
+            // row_num
+            // 
+            this.row_num.DataPropertyName = "row_num";
+            this.row_num.HeaderText = "序号";
+            this.row_num.Name = "row_num";
+            this.row_num.ReadOnly = true;
+            this.row_num.Width = 70;
             // 
             // sn
             // 
@@ -231,6 +242,7 @@
             this.remarks.HeaderText = "备注";
             this.remarks.Name = "remarks";
             this.remarks.ReadOnly = true;
+            this.remarks.Width = 80;
             // 
             // is_upload
             // 
@@ -293,6 +305,7 @@
         private System.Windows.Forms.Button button_del;
         private System.Windows.Forms.DataGridView grid_weights;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn row_num;
         private System.Windows.Forms.DataGridViewTextBoxColumn sn;
         private System.Windows.Forms.DataGridViewTextBoxColumn create_time;
         private System.Windows.Forms.DataGridViewTextBoxColumn weight;

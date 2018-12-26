@@ -35,7 +35,7 @@ namespace WeighPig
         /// </summary>
         private void dataSource_weights()
         {
-            this.grid_weights.DataSource = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
+            this.grid_weights.DataSource = DbUtil.queryWeights("select w.*, (@i:=@i+1) i from t_weights w,(select @i:=0) t2 where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
             this.grid_weights.ClearSelection();
         }
 
@@ -64,6 +64,7 @@ namespace WeighPig
                 MessageBox.Show("重量必须为数字");
                 return;
             }
+            weights.id = Guid.NewGuid().ToString();
             weights.create_time = this.input_date.Value.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
             weights.level = this.combobox_labels.Text;
             weights.remarks = this.input_remarks.Text;

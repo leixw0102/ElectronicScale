@@ -39,13 +39,15 @@
             this.input_date = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.grid_reports = new System.Windows.Forms.DataGridView();
-            this.report_level = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.report_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.report_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.grid_weights = new System.Windows.Forms.DataGridView();
+            this.report_level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.report_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.report_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.report_average = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.row_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.create_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -93,7 +95,8 @@
             this.grid_reports.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.report_level,
             this.report_count,
-            this.report_weight});
+            this.report_weight,
+            this.report_average});
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -116,27 +119,8 @@
             dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.grid_reports.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.grid_reports.RowTemplate.Height = 23;
-            this.grid_reports.Size = new System.Drawing.Size(295, 447);
+            this.grid_reports.Size = new System.Drawing.Size(394, 447);
             this.grid_reports.TabIndex = 22;
-            // 
-            // report_level
-            // 
-            this.report_level.DataPropertyName = "report_level";
-            this.report_level.HeaderText = "级别";
-            this.report_level.Name = "report_level";
-            this.report_level.Width = 70;
-            // 
-            // report_count
-            // 
-            this.report_count.DataPropertyName = "report_count";
-            this.report_count.HeaderText = "累计数量";
-            this.report_count.Name = "report_count";
-            // 
-            // report_weight
-            // 
-            this.report_weight.DataPropertyName = "report_weight";
-            this.report_weight.HeaderText = "累计重量";
-            this.report_weight.Name = "report_weight";
             // 
             // label5
             // 
@@ -171,6 +155,7 @@
             this.grid_weights.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid_weights.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
+            this.row_num,
             this.sn,
             this.create_time,
             this.weight,
@@ -203,13 +188,48 @@
             this.grid_weights.Size = new System.Drawing.Size(870, 447);
             this.grid_weights.TabIndex = 25;
             // 
+            // report_level
+            // 
+            this.report_level.DataPropertyName = "report_level";
+            this.report_level.HeaderText = "级别";
+            this.report_level.Name = "report_level";
+            this.report_level.Width = 70;
+            // 
+            // report_count
+            // 
+            this.report_count.DataPropertyName = "report_count";
+            this.report_count.HeaderText = "累计数量";
+            this.report_count.Name = "report_count";
+            // 
+            // report_weight
+            // 
+            this.report_weight.DataPropertyName = "report_weight";
+            this.report_weight.HeaderText = "累计重量";
+            this.report_weight.Name = "report_weight";
+            // 
+            // report_average
+            // 
+            this.report_average.DataPropertyName = "report_average";
+            this.report_average.HeaderText = "平均重量";
+            this.report_average.Name = "report_average";
+            this.report_average.ReadOnly = true;
+            // 
             // id
             // 
             this.id.DataPropertyName = "id";
             this.id.HeaderText = "Id";
             this.id.Name = "id";
             this.id.ReadOnly = true;
+            this.id.Visible = false;
             this.id.Width = 50;
+            // 
+            // row_num
+            // 
+            this.row_num.DataPropertyName = "row_num";
+            this.row_num.HeaderText = "序号";
+            this.row_num.Name = "row_num";
+            this.row_num.ReadOnly = true;
+            this.row_num.Width = 70;
             // 
             // sn
             // 
@@ -255,6 +275,7 @@
             this.remarks.HeaderText = "备注";
             this.remarks.Name = "remarks";
             this.remarks.ReadOnly = true;
+            this.remarks.Width = 80;
             // 
             // is_upload
             // 
@@ -284,7 +305,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1217, 514);
+            this.ClientSize = new System.Drawing.Size(1327, 514);
             this.Controls.Add(this.grid_weights);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label5);
@@ -313,7 +334,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn report_level;
         private System.Windows.Forms.DataGridViewTextBoxColumn report_count;
         private System.Windows.Forms.DataGridViewTextBoxColumn report_weight;
+        private System.Windows.Forms.DataGridViewTextBoxColumn report_average;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn row_num;
         private System.Windows.Forms.DataGridViewTextBoxColumn sn;
         private System.Windows.Forms.DataGridViewTextBoxColumn create_time;
         private System.Windows.Forms.DataGridViewTextBoxColumn weight;

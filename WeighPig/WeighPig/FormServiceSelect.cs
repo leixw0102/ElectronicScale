@@ -37,7 +37,7 @@ namespace WeighPig
         /// </summary>
         private void dataSource_weights()
         {
-            this.grid_weights.DataSource = DbUtil.queryWeights("select * from t_weights where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
+            this.grid_weights.DataSource = DbUtil.queryWeights("select w.*, (@i:=@i+1) i from t_weights w,(select @i:=0) t2 where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' order by sn;");
             this.grid_weights.ClearSelection();
         }
 
@@ -46,7 +46,14 @@ namespace WeighPig
         /// </summary>
         private void dataSource_reports()
         {
-            this.grid_reports.DataSource = DbUtil.queryReports("select level, count(1), sum(weight) from t_weights where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' group by level; ");
+            List<Reports> list = DbUtil.queryReports("select level, count(1), FORMAT(sum(weight),2), FORMAT(sum(weight)/count(1),2)  from t_weights where life_cycle=1 and DATE(create_time) = '" + this.input_date.Value.ToString("yyyy-MM-dd") + "' group by level; ");
+            Reports reports = new Reports();
+            reports.report_level = "累计";
+            reports.report_count = list.Sum(t => t.report_count);
+            reports.report_weight = list.Sum(t => t.report_weight);
+            reports.report_average = list.Sum(t => t.report_average);
+            list.Add(reports);
+            this.grid_reports.DataSource = list;
             this.grid_reports.ClearSelection();
         }
 

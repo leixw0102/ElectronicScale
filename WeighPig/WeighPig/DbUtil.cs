@@ -11,8 +11,8 @@ namespace WeighPig
 {
     static class DbUtil
     {
-        //public static string Conn = "Database='xy_pig_data';Data Source='localhost';User Id='collecter';Password='xy123456';charset='utf8';pooling=true";
-        public static string Conn = "Database='pig';Data Source='123.150.143.151';User Id='root';Password='jqt2017*';charset='utf8';pooling=true";
+        public static string Conn = "Database='xy_pig_data';Data Source='localhost';User Id='collecter';Password='xy123456';charset='utf8';pooling=true";
+        //public static string Conn = "Database='pig';Data Source='123.150.143.151';User Id='root';Password='jqt2017*';charset='utf8';pooling=true;Allow User Variables=True;";
 
         /// <summary>
         /// 查询按钮list
@@ -113,6 +113,11 @@ namespace WeighPig
             }
         }
 
+        /// <summary>
+        /// 新增标签
+        /// </summary>
+        /// <param name="labelItem"></param>
+        /// <returns></returns>
         public static bool insertLabelItem(LabelItem labelItem)
         {
             MySqlConnection conn = new MySqlConnection(Conn);
@@ -221,7 +226,7 @@ namespace WeighPig
                         if (reader.HasRows)
                         {
                             Weights w = new Weights();
-                            w.id = reader.GetInt32(0);
+                            w.id = reader.GetString(0);
                             w.sn = reader.GetInt32(1);
                             w.create_time = reader.GetString(2);
                             w.weight = reader.GetString(3);
@@ -231,12 +236,13 @@ namespace WeighPig
                             w.is_upload = reader.GetInt32(7);
                             w.life_cycle = reader.GetInt32(8);
                             w.is_handwrite = reader.GetInt32(9);
+                            w.row_num = reader.GetInt32(10);
                             weights.Add(w);
                         }
                     }
                     return weights;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return weights;
                 }
@@ -275,8 +281,9 @@ namespace WeighPig
 
                 #region//插入数据
                 StringBuilder strSql = new StringBuilder();
-                strSql.AppendFormat(@"insert into t_weights (sn, create_time, weight, level, remarks, type, is_upload, life_cycle, is_handwrite)
-                values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')",
+                strSql.AppendFormat(@"insert into t_weights (id, sn, create_time, weight, level, remarks, type, is_upload, life_cycle, is_handwrite)
+                values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}')",
+                                weights.id,
                                 weights.sn,
                                 weights.create_time,
                                 weights.weight,
@@ -326,7 +333,7 @@ namespace WeighPig
                 conn.Open();
 
                 StringBuilder strSql = new StringBuilder();
-                strSql.AppendFormat(@"update t_weights set sn='{0}',weight='{1}',level='{2}',remarks='{3}',type='{4}', is_upload={5}, life_cycle={6} where id={7}", 
+                strSql.AppendFormat(@"update t_weights set sn='{0}',weight='{1}',level='{2}',remarks='{3}',type='{4}', is_upload={5}, life_cycle={6} where id='{7}'", 
                                 weights.sn, 
                                 weights.weight, 
                                 weights.level,
@@ -386,8 +393,9 @@ namespace WeighPig
                         {
                             Reports r = new Reports();
                             r.report_level = reader.GetString(0);
-                            r.report_count = reader.GetString(1);
-                            r.report_weight = reader.GetString(2);
+                            r.report_count = reader.GetInt32(1);
+                            r.report_weight = reader.GetDouble(2);
+                            r.report_average = reader.GetDouble(3);
                             reports.Add(r);
                         }
                     }
