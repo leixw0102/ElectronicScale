@@ -218,7 +218,7 @@ namespace WeighPig
 
             if (this.grid_weights.RowCount > 0)
             {
-                ssn = (int)this.grid_weights.Rows[0].Cells["sn"].Value;
+                ssn = (int)this.grid_weights.Rows[this.grid_weights.RowCount - 1].Cells["sn"].Value;
             }
             else
             {
