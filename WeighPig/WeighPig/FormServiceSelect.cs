@@ -50,8 +50,8 @@ namespace WeighPig
             Reports reports = new Reports();
             reports.report_level = "累计";
             reports.report_count = list.Sum(t => t.report_count);
-            reports.report_weight = list.Sum(t => t.report_weight);
-            reports.report_average = list.Sum(t => t.report_average);
+            reports.report_weight = double.Parse(list.Sum(t => t.report_weight).ToString("0.00"));
+            reports.report_average = double.Parse((reports.report_weight / reports.report_count).ToString("0.00"));
             list.Add(reports);
             this.grid_reports.DataSource = list;
             this.grid_reports.ClearSelection();

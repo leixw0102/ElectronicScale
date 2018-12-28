@@ -11,8 +11,8 @@ namespace WeighPig
 {
     static class DbUtil
     {
-        public static string Conn = "Database='xy_pig_data';Data Source='localhost';User Id='collecter';Password='xy123456';charset='utf8';pooling=true;Allow User Variables=True;";
-        //public static string Conn = "Database='pig';Data Source='123.150.143.151';User Id='root';Password='jqt2017*';charset='utf8';pooling=true;Allow User Variables=True;";
+        //public static string Conn = "Database='xy_pig_data';Data Source='localhost';User Id='collecter';Password='xy123456';charset='utf8';pooling=true;Allow User Variables=True;";
+        public static string Conn = "Database='pig';Data Source='123.150.143.151';User Id='root';Password='jqt2017*';charset='utf8';pooling=true;Allow User Variables=True;";
 
         /// <summary>
         /// 查询按钮list
